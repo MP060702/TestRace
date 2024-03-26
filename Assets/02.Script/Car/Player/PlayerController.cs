@@ -6,14 +6,12 @@ public class PlayerController : MonoBehaviour
 {   
     private CarMoveSystem _carMoveSystem;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _carMoveSystem = GetComponent<CarMoveSystem>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         MoveInputSystem();
     }

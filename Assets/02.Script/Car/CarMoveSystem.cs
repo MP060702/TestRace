@@ -9,8 +9,8 @@ public class WheelInfo
 {
     public WheelCollider LeftWheel;
     public WheelCollider RightWheel;
-    public bool Steer;
     public bool Motor;
+    public bool Steer;
 }
 
 public class CarMoveSystem : MonoBehaviour
@@ -21,24 +21,24 @@ public class CarMoveSystem : MonoBehaviour
     public float MaxSteer;
     public float BrakeForce;
 
-    public void MoveWheel(float motorTorque, float steer, bool bIsBrake)
+    public void MoveWheel(float motorTorque, float steer, bool bIsBrake = false)
     {
-        foreach(var wheel in WheelInfo)
+        foreach (var wheel in WheelInfo) 
         {
             if (wheel.Motor)
             {
                 wheel.LeftWheel.motorTorque = MaxMotor * motorTorque;
                 wheel.RightWheel.motorTorque = MaxMotor * motorTorque;
             }
-            if(wheel.Steer)
+            if (wheel.Steer)
             {
-                wheel.LeftWheel.steerAngle = steer * MaxSteer;
-                wheel.RightWheel.steerAngle = steer * MaxSteer; 
+                wheel.LeftWheel.steerAngle = MaxSteer * steer;
+                wheel.RightWheel.steerAngle = MaxSteer * steer;
             }
 
-            float isbrake = bIsBrake ? 1 : 0;
-            wheel.LeftWheel.brakeTorque = BrakeForce * isbrake;
-            wheel.RightWheel.brakeTorque = BrakeForce * isbrake;
+            float isBrake = bIsBrake ? 1 : 0;
+            wheel.LeftWheel.brakeTorque = isBrake * BrakeForce;
+            wheel.RightWheel.brakeTorque = isBrake * BrakeForce;
 
             WheelPos(wheel.LeftWheel);
             WheelPos(wheel.RightWheel);
@@ -47,10 +47,9 @@ public class CarMoveSystem : MonoBehaviour
 
     void WheelPos(WheelCollider wheel)
     {
-        Transform Tier = wheel.transform.GetChild(0);
+        Transform tier = wheel.transform.GetChild(0);
         wheel.GetWorldPose(out Vector3 pos, out Quaternion rot);
-
-        Tier.position = pos;
-        Tier.rotation = rot;
+        tier.position = pos;
+        tier.rotation = rot;
     }
 }
